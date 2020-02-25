@@ -47,10 +47,10 @@ async function run() {
       };
       
       // Intermediate obj
-      var tObj = parser.getTraversalObj(cont,options);
+      var tObj = parser.getTraversalObj(content,options);
       var jsonObj = parser.convertToJson(tObj,options);
       releaseName = jsonObj.Project.PropertyGroup[0].AssemblyVersion;
-
+      console.log("set releaseName to " + releaseName);
     }
 
 
