@@ -1,5 +1,6 @@
 const core = require('@actions/core');
 const { GitHub, context } = require('@actions/github');
+const fs = require('fs');
 
 async function run() {
   try {
@@ -21,36 +22,36 @@ async function run() {
     const prerelease = core.getInput('prerelease', { required: false }) === 'true';
 
     if(csproj != null){
-      const contentsBuffer = fs.readFileSync(path);
+      const contentsBuffer = fs.readFileSync(csproj);
       const content = contentsBuffer.toString('utf-8');
 
-      var parser = require('fast-xml-parser');
-      var he = require("he");
+      let parser = require('fast-xml-parser');
+      let he = require('he');
 
-      var options = {
-        attributeNamePrefix : "@_",
-        attrNodeName: "attr", //default is 'false'
-        textNodeName : "#text",
-        ignoreAttributes : true,
-        ignoreNameSpace : false,
-        allowBooleanAttributes : false,
-        parseNodeValue : true,
-        parseAttributeValue : false,
+      let options = {
+        attributeNamePrefix: '@_',
+        attrNodeName: 'attr', //default is 'false'
+        textNodeName: '#text',
+        ignoreAttributes: true,
+        ignoreNameSpace: false,
+        allowBooleanAttributes: false,
+        parseNodeValue: true,
+        parseAttributeValue: false,
         trimValues: true,
-        cdataTagName: "__cdata", //default is 'false'
-        cdataPositionChar: "\\c",
+        cdataTagName: '__cdata', //default is 'false'
+        cdataPositionChar: '\\c',
         parseTrueNumberOnly: false,
         arrayMode: false, //"strict"
-        attrValueProcessor: (val, attrName) => he.decode(val, {isAttributeValue: true}),//default is a=>a
-        tagValueProcessor : (val, tagName) => he.decode(val), //default is a=>a
-        stopNodes: ["parse-me-as-string"]
+        attrValueProcessor: (val, _) => he.decode(val, { isAttributeValue: true }),//default is a=>a
+        tagValueProcessor : (val, _) => he.decode(val), //default is a=>a
+        stopNodes: ['parse-me-as-string']
       };
       
       // Intermediate obj
       var tObj = parser.getTraversalObj(content,options);
       var jsonObj = parser.convertToJson(tObj,options);
       releaseName = jsonObj.Project.PropertyGroup[0].AssemblyVersion;
-      console.log("set releaseName to " + releaseName);
+      console.log('set releaseName to ' + releaseName);
     }
 
 
