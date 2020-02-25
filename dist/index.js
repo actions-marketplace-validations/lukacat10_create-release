@@ -64,6 +64,7 @@ eval("require")("fast-xml-parser");
 
 const core = __webpack_require__(877);
 const { GitHub, context } = __webpack_require__(914);
+const fs = __webpack_require__(747);
 
 async function run() {
   try {
@@ -85,36 +86,36 @@ async function run() {
     const prerelease = core.getInput('prerelease', { required: false }) === 'true';
 
     if(csproj != null){
-      const contentsBuffer = fs.readFileSync(path);
+      const contentsBuffer = fs.readFileSync(csproj);
       const content = contentsBuffer.toString('utf-8');
 
-      var parser = __webpack_require__(176);
-      var he = __webpack_require__(169);
+      let parser = __webpack_require__(176);
+      let he = __webpack_require__(169);
 
-      var options = {
-        attributeNamePrefix : "@_",
-        attrNodeName: "attr", //default is 'false'
-        textNodeName : "#text",
-        ignoreAttributes : true,
-        ignoreNameSpace : false,
-        allowBooleanAttributes : false,
-        parseNodeValue : true,
-        parseAttributeValue : false,
+      let options = {
+        attributeNamePrefix: '@_',
+        attrNodeName: 'attr', //default is 'false'
+        textNodeName: '#text',
+        ignoreAttributes: true,
+        ignoreNameSpace: false,
+        allowBooleanAttributes: false,
+        parseNodeValue: true,
+        parseAttributeValue: false,
         trimValues: true,
-        cdataTagName: "__cdata", //default is 'false'
-        cdataPositionChar: "\\c",
+        cdataTagName: '__cdata', //default is 'false'
+        cdataPositionChar: '\\c',
         parseTrueNumberOnly: false,
         arrayMode: false, //"strict"
-        attrValueProcessor: (val, attrName) => he.decode(val, {isAttributeValue: true}),//default is a=>a
-        tagValueProcessor : (val, tagName) => he.decode(val), //default is a=>a
-        stopNodes: ["parse-me-as-string"]
+        attrValueProcessor: (val, _) => he.decode(val, { isAttributeValue: true }),//default is a=>a
+        tagValueProcessor : (val, _) => he.decode(val), //default is a=>a
+        stopNodes: ['parse-me-as-string']
       };
       
       // Intermediate obj
       var tObj = parser.getTraversalObj(content,options);
       var jsonObj = parser.convertToJson(tObj,options);
       releaseName = jsonObj.Project.PropertyGroup[0].AssemblyVersion;
-      console.log("set releaseName to " + releaseName);
+      console.log('set releaseName to ' + releaseName);
     }
 
 
@@ -147,6 +148,13 @@ async function run() {
 
 module.exports = run;
 
+
+/***/ }),
+
+/***/ 747:
+/***/ (function(module) {
+
+module.exports = require("fs");
 
 /***/ }),
 
