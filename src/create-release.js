@@ -50,6 +50,7 @@ async function run() {
       // Intermediate obj
       var tObj = parser.getTraversalObj(content,options);
       var jsonObj = parser.convertToJson(tObj,options);
+      console.log("release before " + releaseName);
       releaseName = jsonObj.Project.PropertyGroup[0].AssemblyVersion;
       console.log('set releaseName to ' + releaseName);
     }
