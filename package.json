@@ -22,7 +22,9 @@
   "dependencies": {
     "@actions/core": "^1.0.0",
     "@actions/exec": "^1.0.0",
-    "@actions/github": "^1.0.0"
+    "@actions/github": "^1.0.0",
+    "fast-xml-parser": "^3.16.0",
+    "he": "^1.2.0"
   },
   "devDependencies": {
     "@zeit/ncc": "^0.20.4",

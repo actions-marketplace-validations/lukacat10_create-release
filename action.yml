@@ -8,6 +8,9 @@ inputs:
   release_name:
     description: 'The name of the release. For example, `Release v1.0.1`'
     required: true
+  csproj_path:
+    description: 'Path to the file containing the release version'
+    required: true
   body:
     description: 'Text describing the contents of the tag.'
     required: false
