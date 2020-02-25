@@ -8650,7 +8650,7 @@ async function run() {
     const tagName = core.getInput('tag_name', { required: true });
 
     // This removes the 'refs/tags' portion of the string, i.e. from 'refs/tags/v1.10.15' to 'v1.10.15'
-    const tag = tagName.replace('refs/tags/', '');
+    let tag = tagName.replace('refs/tags/', '');
     let releaseName = core.getInput('release_name', { required: true }).replace('refs/tags/', '');
     const csproj = core.getInput('csproj_path', {required: true });
     const body = core.getInput('body', { required: false });
@@ -8689,6 +8689,7 @@ async function run() {
       console.log("release before " + releaseName);
       releaseName = jsonObj.Project.PropertyGroup[0].AssemblyVersion;
       console.log('set releaseName to ' + releaseName);
+      tag = "v" + jsonObj.Project.PropertyGroup[0].AssemblyVersion;
     }
 
 
